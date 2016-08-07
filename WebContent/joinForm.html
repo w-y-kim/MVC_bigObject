@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>회원가입</title>
+
+		<script type="text/javascript" charset="utf-8">
+            var isIdChecked = false;
+            //중복확인 누르면 실행할 스크립트
+            function check() {
+                var id = document.getElementsByName('id');
+                var child = window.open('ActionServlet?action=ID_CHECK&id=' + id[0].value, '아이디 중복확인', 'width=300px,height=300px,locaton=no,menubar=no');
+
+                //창열리자마자 서블릿 들어가서 DB검색하려면 이렇게 하면 안되고 서블릿에서 처리해야함
+                //child.document.getElementById('id').value = id[0].value;
+                //TODO 왜 자식 객체에 name 속성으로 넣으면 안될까?
+                // child.document.getElementsByname('id').value = id[0].value;
+				isIdChecked = true;
+            }
+
+            //가입정보 체크 스크립트
+            function formCheck() {
+
+                var pw = document.getElementsByName('pw');
+                var pwc = document.getElementsByName('pwc');
+
+                var id = document.getElementsByName('id');
+
+                //길이 불일치
+
+                //패스워드 불일치
+                if (pw[0].value != pwc[0].value) {
+                    alert('패스워드 불일치');
+                    return false;
+                }
+                if (isIdChecked == false) {
+                    alert('ID 중복체크 해주세요');
+                    return false;
+                }
+
+                return true;
+
+            }
+
+		</script>
+
+	</head>
+	<body>
+		<h1>[ 회원가입1 : 중복체크 새창으로 하기(예전 스타일,창닫으면 그만이라 비효율적) ]</h1>
+		<form action="ActionServlet?action=JOIN_RESULT" method="post" onsubmit="return formCheck();">
+			<table>
+				<col width="20%"/>
+				<col width="80%"/>
+				<tr>
+					<td>고객ID</td><td>
+					<input type="text" id="id" name='id' placeholder="ID를 3~10자로 입력" required maxlength="10" />
+					<input type="button" onclick="javascript:check()" value="ID 중복확인" required />
+					</td>
+				</tr>
+				<tr>
+					<td>비밀번호</td><td>
+					<input type="password" name='pw' placeholder="Password를 3~10자로 입력" required maxlength="10" />
+					</td>
+				</tr>
+				<tr>
+					<td>비밀번호확인</td><td>
+					<input type="password" name='pwc' placeholder="비밀번호를 다시 한번 입력" required maxlength="10" />
+					</td>
+				</tr>
+				<tr>
+					<td>이름</td><td>
+					<input type="text" name='name' placeholder="이름 입력" required/>
+					</td>
+				</tr>
+				<tr>
+					<td> E-mail</td><td>
+					<input type="text" name='mail' placeholder="E-Mail주소 입력" required />
+					</td>
+				</tr>
+				<tr>
+					<td>회원구분</td><td>
+					<input type="radio" name='type' value="개인" checked />
+					개인
+					<input type="radio" name='type' value="법인" />
+					법인 </td>
+				</tr>
+				<tr>
+					<td>식별번호</td><td>
+					<input type="text" name='code' placeholder="식별번호" required/>
+					</td>
+				</tr>
+				<tr>
+					<td>주소</td><td>
+					<input type="text" name='addr' placeholder="주소" />
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+					<input type="submit" value="가입"/>
+					<input type="reset" value="다시쓰기"/>
+					</td>
+				</tr>
+				<tr>
+			</table>
+		</form>
+	</body>
+</html>
